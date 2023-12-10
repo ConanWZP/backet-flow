@@ -9,10 +9,10 @@ interface TableRowProps {
         b: number,
         c: number[]
     },
-    sell: boolean
+    isSelling: boolean
 }
 
-const TableRow: FC<TableRowProps> = ({value, rowData, sell}) => {
+const TableRow: FC<TableRowProps> = ({value, rowData, isSelling}) => {
     return (
         <motion.div
             initial={{
@@ -25,16 +25,16 @@ const TableRow: FC<TableRowProps> = ({value, rowData, sell}) => {
                 delay: 0.1
             }}
             className={`tr half`}>
-            <div className={'td'}>
+            <div className={`td ${isSelling ? 'priceSelling': 'priceBuying'}`}>
                 {rowData?.a}
             </div>
             <div className={'td'}>
                 {rowData?.b}
             </div>
             <div className={'td'}>
-                {(Number(rowData?.a) * rowData?.b).toFixed(4)}
+                {(Number(rowData?.a) * rowData?.b).toFixed(2)}
             </div>
-            <div className={`bgc ${sell ? 'bgcG' : 'bgcR'}`} style={{width: `${value}%`}}>
+            <div className={`bgc ${isSelling ? 'bgcR' : 'bgcG'}`} style={{width: `${value}%`}}>
 
             </div>
         </motion.div>

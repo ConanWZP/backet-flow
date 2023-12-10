@@ -5,16 +5,14 @@ let minBuy = 25975
 let maxBuy = 26005
 
 let obj1 = {
-    /*'1': {
-        a: 1,
-        b: 2,
-        c: []
-    }*/
+
 }
 
 let obj2 = {
 
 }
+
+
 
 
 
@@ -159,7 +157,7 @@ obj2 = Object.keys(obj2).sort((a, b) => a - b).reduce((acc, i) => {
 
 
 // obj2 - покупки, соответственно по цене ниже, чем продажи
-for (const minBuyingPrice in obj2) {
+for (const maxBuyingPrice in obj2) {
 
     // из-за удаления внутренних delete при каждом проходе будет удаляться нулевой элемент,
     // следовательно i не должен менять и всегда = 0
@@ -167,21 +165,21 @@ for (const minBuyingPrice in obj2) {
         // самая дешёвая котировка в продаже
         const minSellingPrice = Object.keys(obj1)[0]
 
-        if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ +minBuyingPrice >= +minSellingPrice) {
+        if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ +maxBuyingPrice >= +minSellingPrice) {
             console.log(obj1[minSellingPrice], 'Продажа')
-            console.log(obj2[minBuyingPrice], 'Покупка')
-            if (obj2[minBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
-                obj2[minBuyingPrice]['b'] = +(obj2[minBuyingPrice]['b'] - obj1[minSellingPrice]['b']).toFixed(5)
+            console.log(obj2[maxBuyingPrice], 'Покупка')
+            if (obj2[maxBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
+                obj2[maxBuyingPrice]['b'] = +(obj2[maxBuyingPrice]['b'] - obj1[minSellingPrice]['b']).toFixed(5)
                 let negativePrice = obj1[minSellingPrice]['b']
                 // из-за shift'a i++ не нужен
-                for (let i = 0; i < obj2[minBuyingPrice]['c'].length; i) {
-                    const tempNegativePrice = +(negativePrice - obj2[minBuyingPrice]['c'][i]).toFixed(5)
+                for (let i = 0; i < obj2[maxBuyingPrice]['c'].length; i) {
+                    const tempNegativePrice = +(negativePrice - obj2[maxBuyingPrice]['c'][i]).toFixed(5)
 
                     if (tempNegativePrice < 0) {
-                        obj2[minBuyingPrice]['c'][i] = +(obj2[minBuyingPrice]['c'][i] - negativePrice).toFixed(5)
+                        obj2[maxBuyingPrice]['c'][i] = +(obj2[maxBuyingPrice]['c'][i] - negativePrice).toFixed(5)
                         break
                     } else {
-                        obj2[minBuyingPrice]['c'].shift()
+                        obj2[maxBuyingPrice]['c'].shift()
                         negativePrice = tempNegativePrice
                     }
                 }
@@ -189,17 +187,17 @@ for (const minBuyingPrice in obj2) {
                 delete obj1[minSellingPrice]
 
 
-            } else if (obj1[minSellingPrice]['b'] === obj2[minBuyingPrice]['b']) {
+            } else if (obj1[minSellingPrice]['b'] === obj2[maxBuyingPrice]['b']) {
                 delete obj1[minSellingPrice]
-                delete obj2[minBuyingPrice]
+                delete obj2[maxBuyingPrice]
                 //
                 break
 
             } else {
 
                 //Удаление работает
-                obj1[minSellingPrice]['b'] = +(obj1[minSellingPrice]['b'] - obj2[minBuyingPrice]['b']).toFixed(5)
-                let negativePrice = obj2[minBuyingPrice]['b']
+                obj1[minSellingPrice]['b'] = +(obj1[minSellingPrice]['b'] - obj2[maxBuyingPrice]['b']).toFixed(5)
+                let negativePrice = obj2[maxBuyingPrice]['b']
                 // из-за shift'a i++ не нужен
                 for (let i = 0; i < obj1[minSellingPrice]['c'].length; i) {
                     const tempNegativePrice = +(negativePrice - obj1[minSellingPrice]['c'][i]).toFixed(5)
@@ -211,7 +209,7 @@ for (const minBuyingPrice in obj2) {
                         negativePrice = tempNegativePrice
                     }
                 }
-                delete obj2[minBuyingPrice]
+                delete obj2[maxBuyingPrice]
                 break
             }
         } else {

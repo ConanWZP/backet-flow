@@ -1,3 +1,8 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 #root {
   max-width: 1280px;
   margin: 0 auto;
@@ -52,18 +57,30 @@
 }
 
 .tbody {
+  width: 380px;
 
 }
 
 .tr {
   display: flex;
   margin: 10px 0;
-  gap: 20px;
+ /* gap: 20px;*/
+/*  justify-content: space-between;*/
  /* transition: all 0.1s ease-in-out;*/
 }
 
 .td {
+  width: 33%;
+  text-align: right;
+}
 
+.td:nth-child(1) {
+  text-align: start;
+  padding-left: 7px;
+}
+
+.td:nth-child(3) {
+  padding-right: 7px;
 }
 
 .half{
@@ -86,13 +103,28 @@
   height: 100%;
 
   z-index: -1;
-  transition: all 0.3s ease-in-out;
+  transition: width 0.3s ease-in-out;
 }
 
 .bgcG {
-  background: rgba(0, 128, 0, 0.5);
+  background-color: rgb(45, 60, 46)
 }
 
 .bgcR {
-  background: rgba(128, 0, 0, 0.5);
+  background-color: rgb(59, 38, 38);;
+}
+
+.priceSelling {
+  color: rgb(255, 150, 142);
+}
+
+.priceBuying {
+  color: rgb(150, 213, 142);
+}
+
+.lastTrade {
+  margin: 20px 0;
+  text-align: left;
+  font-size: 24px;
+  padding-left: 7px;
 }
