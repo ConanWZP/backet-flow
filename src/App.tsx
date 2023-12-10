@@ -4,22 +4,22 @@ import TableBody from "./components/TableBody.tsx";
 
 function App() {
     const [value, setValue] = useState<string>('')
-    const [minSell, setMinSell] = useState(25995)
-    const [maxSell, setMaxSell] = useState(26035)
-    const [minBuy, setMinBuy] = useState(25975)
-    const [maxBuy, setMaxBuy] = useState(26005)
+    const [minSell, setMinSell] = useState<number>(25995)
+    const [maxSell, setMaxSell] = useState<number>(26035)
+    const [minBuy, setMinBuy] = useState<number>(25975)
+    const [maxBuy, setMaxBuy] = useState<number>(26005)
     const [obj1, setObj1] = useState({})
     const [obj2, setObj2] = useState({})
 
 
-    const rand = (min, max) => {
+    const rand = (min: number, max: number) => {
         let price = (min + Math.random() * (max + 1 - min)).toFixed(2)
         price = price.length === 7 ? `${price}0` : price.length === 5 ? `${price}.00` : price
         const amount = +(Math.random().toFixed(5))
         return {a: price, b: amount}
     }
 
-    const generat = (objIn, min, max) => {
+    const generat = (objIn: any, min: number, max: number) => {
         const randResult = rand(min, max)
         // const newObj = obj
         // console.log(obj)
@@ -52,7 +52,7 @@ function App() {
 
     }
 
-    const makeTrade = (obj1, obj2) => {
+    const makeTrade = (obj1: any, obj2: any) => {
 
         // let obj1 = JSON.parse(JSON.stringify(obj1In))
         // let obj2 =
