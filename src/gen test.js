@@ -185,6 +185,7 @@ for (const key in obj1) {
         break
     }
 }
+// asd
 /*obj1 = Object.keys(obj1).sort((a, b) => a - b).reduce((acc, i) => {
     acc[i] = obj1[i]
     return acc
