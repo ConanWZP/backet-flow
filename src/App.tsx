@@ -2,12 +2,15 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import TableBody from "./components/TableBody.tsx";
 
+const maxAndMinData = {
+    'minSell': 25995,
+    'maxSell': 26035,
+    'minBuy': 25975,
+    'maxBuy': 26005
+}
+
 function App() {
     const [value, setValue] = useState<string>('')
-    const [minSell, setMinSell] = useState<number>(25995)
-    const [maxSell, setMaxSell] = useState<number>(26035)
-    const [minBuy, setMinBuy] = useState<number>(25975)
-    const [maxBuy, setMaxBuy] = useState<number>(26005)
     const [obj1, setObj1] = useState({})
     const [obj2, setObj2] = useState({})
 
@@ -44,7 +47,7 @@ function App() {
 
             }
         }
-        obj = Object.keys(obj).sort((a, b) => a - b).reduce((acc, i) => {
+        obj = Object.keys(obj).sort((a: any, b: any) => a - b).reduce((acc: any, i) => {
             acc[i] = obj[i]
             return acc
         }, {})
@@ -136,12 +139,12 @@ function App() {
             //   generat(obj2, setObj2, minBuy, maxBuy)
 
             //  console.log(testObj1)
-            const generatedObj = generat(obj1, minSell, maxSell)
+            const generatedObj = generat(obj1, maxAndMinData['minSell'], maxAndMinData['maxSell'])
             // console.log(generatedObj)
             //  setObj1(generatedObj)
 
             //  const testObj2 = JSON.parse(JSON.stringify(obj2))
-            const generatedObj2 = generat(obj2, minBuy, maxBuy)
+            const generatedObj2 = generat(obj2, maxAndMinData['minBuy'], maxAndMinData['maxBuy'])
             // console.log(generatedObj)
             //  setObj2(generatedObj2)
             const [firstData, secondData] = makeTrade(generatedObj, generatedObj2)
@@ -153,7 +156,7 @@ function App() {
 
         return () => clearInterval(generateData)
 
-    }, [maxSell, minSell, obj1, obj2]);
+    }, [ obj1, obj2]);
 
 
     return (
