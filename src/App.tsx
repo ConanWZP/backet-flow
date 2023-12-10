@@ -3,16 +3,20 @@ import './App.css'
 import TableBody from "./components/TableBody.tsx";
 
 const maxAndMinData = {
-    'minSell': 25995,
-    'maxSell': 26035,
-    'minBuy': 25975,
-    'maxBuy': 26005
+    'minSell': 46995,
+    'maxSell': 47035,
+    'minBuy': 46975,
+    'maxBuy': 47005
 }
 
 function App() {
     const [obj1, setObj1] = useState({})
     const [obj2, setObj2] = useState({})
+    const [isPause, setIsPause] = useState<boolean>(false)
 
+    const changePauseStatus = () => {
+        setIsPause((prevState) => !prevState)
+    }
 
     const rand = (min: number, max: number) => {
         let price = (min + Math.random() * (max + 1 - min)).toFixed(2)
@@ -114,51 +118,55 @@ function App() {
 
 
     useEffect(() => {
-        //   const testObj = JSON.parse(JSON.stringify(obj1))
-        //    const generatedObj = generat(testObj, minSell, maxSell)
-        // console.log(generatedObj)
-        //    setObj1(generatedObj)
-        // console.log(obj1)
-
-        // console.log(testObj === obj1)
-        const generateData = setInterval(() => {
-            // console.log('Вывожу')
-            //  generat(obj1, setObj1, minSell, maxSell)
-            //   generat(obj2, setObj2, minBuy, maxBuy)
-
-            //  console.log(testObj1)
-            const generatedObj = generat(obj1, maxAndMinData['minSell'], maxAndMinData['maxSell'])
+        if (!isPause) {
+            //   const testObj = JSON.parse(JSON.stringify(obj1))
+            //    const generatedObj = generat(testObj, minSell, maxSell)
             // console.log(generatedObj)
-            //  setObj1(generatedObj)
+            //    setObj1(generatedObj)
+            // console.log(obj1)
 
-            //  const testObj2 = JSON.parse(JSON.stringify(obj2))
-            const generatedObj2 = generat(obj2, maxAndMinData['minBuy'], maxAndMinData['maxBuy'])
-            // console.log(generatedObj)
-            //  setObj2(generatedObj2)
-            const [firstData, secondData] = makeTrade(generatedObj, generatedObj2)
-            setObj1(firstData)
-            setObj2(secondData)
+            // console.log(testObj === obj1)
+            const generateData = setInterval(() => {
+                // console.log('Вывожу')
+                //  generat(obj1, setObj1, minSell, maxSell)
+                //   generat(obj2, setObj2, minBuy, maxBuy)
+
+                //  console.log(testObj1)
+                const generatedObj = generat(obj1, maxAndMinData['minSell'], maxAndMinData['maxSell'])
+                // console.log(generatedObj)
+                //  setObj1(generatedObj)
+
+                //  const testObj2 = JSON.parse(JSON.stringify(obj2))
+                const generatedObj2 = generat(obj2, maxAndMinData['minBuy'], maxAndMinData['maxBuy'])
+                // console.log(generatedObj)
+                //  setObj2(generatedObj2)
+                const [firstData, secondData] = makeTrade(generatedObj, generatedObj2)
+                setObj1(firstData)
+                setObj2(secondData)
 
 
-        }, 100)
+            }, 100)
 
-        return () => clearInterval(generateData)
+            return () => clearInterval(generateData)
+        }
 
-    }, [obj1, obj2]);
+
+    }, [obj1, obj2, isPause]);
 
 
 
 
     return (
         <div>
+            <button onClick={changePauseStatus}>{isPause ? 'Продолжить': 'Пауза'}</button>
             <div className={'table'}>
                 <div className={'thead'}>
                     <div className={'tr'}>
                         <div className={'td'}>
-                            123
+                            Price (USDT)
                         </div>
                         <div className={'td'}>
-                            456
+                            Amount (BTC)
                         </div>
                         <div className={'td'}>
                             789
