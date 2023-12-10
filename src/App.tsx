@@ -3,10 +3,10 @@ import './App.css'
 import TableBody from "./components/TableBody.tsx";
 
 const maxAndMinData = {
-    'minSell': 46995,
-    'maxSell': 47035,
-    'minBuy': 46975,
-    'maxBuy': 47005
+    'minSell': 25995,
+    'maxSell': 26035,
+    'minBuy': 25975,
+    'maxBuy': 26005
 }
 
 function App() {
