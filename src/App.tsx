@@ -10,7 +10,6 @@ const maxAndMinData = {
 }
 
 function App() {
-    const [value, setValue] = useState<string>('')
     const [obj1, setObj1] = useState({})
     const [obj2, setObj2] = useState({})
 
@@ -24,16 +23,9 @@ function App() {
 
     const generat = (objIn: any, min: number, max: number) => {
         const randResult = rand(min, max)
-        // const newObj = obj
-        // console.log(obj)
+
         let obj = JSON.parse(JSON.stringify(objIn))
         if (obj[randResult['a']]) {
-            /*setObj((prevValue: any) => {
-                return {
-                    ...prevValue,
-
-                }
-            })*/
             obj[randResult['a']] = {
                 ...obj[randResult['a']],
                 b: +(obj[randResult['a']]['b'] + randResult['b']).toFixed(5),
@@ -57,8 +49,6 @@ function App() {
 
     const makeTrade = (obj1: any, obj2: any) => {
 
-        // let obj1 = JSON.parse(JSON.stringify(obj1In))
-        // let obj2 =
         for (const minBuyingPrice in obj2) {
 
             // из-за удаления внутренних delete при каждом проходе будет удаляться нулевой элемент,
@@ -68,8 +58,6 @@ function App() {
                 const minSellingPrice = Object.keys(obj1)[0]
 
                 if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ +minBuyingPrice >= +minSellingPrice) {
-                    console.log(obj1[minSellingPrice], 'Продажа')
-                    console.log(obj2[minBuyingPrice], 'Покупка')
                     if (obj2[minBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
                         obj2[minBuyingPrice]['b'] = +(obj2[minBuyingPrice]['b'] - obj1[minSellingPrice]['b']).toFixed(5)
                         let negativePrice = obj1[minSellingPrice]['b']
@@ -152,16 +140,17 @@ function App() {
             setObj2(secondData)
 
 
-        }, 10)
+        }, 100)
 
         return () => clearInterval(generateData)
 
-    }, [ obj1, obj2]);
+    }, [obj1, obj2]);
+
+
 
 
     return (
         <div>
-            <input value={value} onChange={(event) => setValue(event.target.value)}/>
             <div className={'table'}>
                 <div className={'thead'}>
                     <div className={'tr'}>
@@ -176,7 +165,7 @@ function App() {
                         </div>
                     </div>
                 </div>
-                <TableBody value={value} obj1={obj1} obj2={obj2}/>
+                <TableBody obj1={obj1} obj2={obj2}/>
             </div>
         </div>
     )

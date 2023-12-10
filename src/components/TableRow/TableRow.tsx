@@ -2,17 +2,18 @@ import {FC} from "react";
 
 
 interface TableRowProps {
-    value: string,
+    value: number,
     rowData: {
         a: string,
         b: number,
         c: number[]
-    }
+    },
+    sell: boolean
 }
 
-const TableRow:FC<TableRowProps> = ({value, rowData}) => {
+const TableRow:FC<TableRowProps> = ({value, rowData, sell}) => {
     return (
-        <div className={'tr' + ' ' + 'half'}>
+        <div className={`tr half`}>
             <div className={'td'}>
                 {rowData?.a}
             </div>
@@ -20,9 +21,9 @@ const TableRow:FC<TableRowProps> = ({value, rowData}) => {
                 {rowData?.b}
             </div>
             <div className={'td'}>
-                789
+                {(Number(rowData?.a)*rowData?.b).toFixed(4)}
             </div>
-            <div className={'bgc'} style={{width: `${value}%`}}>
+            <div className={`bgc ${sell ? 'bgcG' : 'bgcR'}`} style={{width: `${value}%`}}>
 
             </div>
         </div>
