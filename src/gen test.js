@@ -62,6 +62,10 @@ const generat = (obj, min, max) => {
 }
 
 
+
+
+
+
 /*generat(1, 5, minSell, maxSell)
 generat(1, 5, minSell, maxSell)
 generat(1, 5, minSell, maxSell)
@@ -135,58 +139,92 @@ let counter = 0
     
 }, 10)*/
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 100; i++) {
     generat(obj1, minSell, maxSell)
     generat(obj2, minBuy, maxBuy)
 }
 
 
-for (const key in obj1) {
-    if (Object.prototype.hasOwnProperty.call(obj2, key)) {
-        console.log(obj1[key], 'Продажа')
-        console.log(obj2[key], 'Покупка')
-        if (obj2[key]['b'] > obj1[key]['b']) {
 
-            obj2[key]['b'] = +(obj2[key]['b'] - obj1[key]['b']).toFixed(5)
-            let negativePrice = obj1[key]['b']
-            // из-за shift'a i++ не нужен
-            for (let i = 0; i < obj2[key]['c'].length; i) {
-                const tempNegativePrice = +(negativePrice - obj2[key]['c'][i]).toFixed(5)
-                // negativePrice = negativePrice - obj2[key]['c'][i]
-                if (tempNegativePrice < 0) {
-                    obj2[key]['c'][i] = +(obj2[key]['c'][i] - negativePrice).toFixed(5)
-                    break
-                } else {
-                    obj2[key]['c'].shift()
-                    negativePrice = tempNegativePrice
+obj1 = Object.keys(obj1).sort((a, b) => a - b).reduce((acc, i) => {
+    acc[i] = obj1[i]
+    return acc
+}, {})
+
+obj2 = Object.keys(obj2).sort((a, b) => a - b).reduce((acc, i) => {
+    acc[i] = obj2[i]
+    return acc
+}, {})
+
+
+
+// obj2 - покупки, соответственно по цене ниже, чем продажи
+for (const minBuyingPrice in obj2) {
+
+    // из-за удаления внутренних delete при каждом проходе будет удаляться нулевой элемент,
+    // следовательно i не должен менять и всегда = 0
+    for (let i = 0; i < Object.keys(obj1).length; i) {
+        // самая дешёвая котировка в продаже
+        const minSellingPrice = Object.keys(obj1)[0]
+
+        if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ +minBuyingPrice >= +minSellingPrice) {
+            console.log(obj1[minSellingPrice], 'Продажа')
+            console.log(obj2[minBuyingPrice], 'Покупка')
+            if (obj2[minBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
+                obj2[minBuyingPrice]['b'] = +(obj2[minBuyingPrice]['b'] - obj1[minSellingPrice]['b']).toFixed(5)
+                let negativePrice = obj1[minSellingPrice]['b']
+                // из-за shift'a i++ не нужен
+                for (let i = 0; i < obj2[minBuyingPrice]['c'].length; i) {
+                    const tempNegativePrice = +(negativePrice - obj2[minBuyingPrice]['c'][i]).toFixed(5)
+
+                    if (tempNegativePrice < 0) {
+                        obj2[minBuyingPrice]['c'][i] = +(obj2[minBuyingPrice]['c'][i] - negativePrice).toFixed(5)
+                        break
+                    } else {
+                        obj2[minBuyingPrice]['c'].shift()
+                        negativePrice = tempNegativePrice
+                    }
                 }
+
+                delete obj1[minSellingPrice]
+
+
+            } else if (obj1[minSellingPrice]['b'] === obj2[minBuyingPrice]['b']) {
+                delete obj1[minSellingPrice]
+                delete obj2[minBuyingPrice]
+                //
+                break
+
+            } else {
+
+                //Удаление работает
+                obj1[minSellingPrice]['b'] = +(obj1[minSellingPrice]['b'] - obj2[minBuyingPrice]['b']).toFixed(5)
+                let negativePrice = obj2[minBuyingPrice]['b']
+                // из-за shift'a i++ не нужен
+                for (let i = 0; i < obj1[minSellingPrice]['c'].length; i) {
+                    const tempNegativePrice = +(negativePrice - obj1[minSellingPrice]['c'][i]).toFixed(5)
+                    if (tempNegativePrice < 0) {
+                        obj1[minSellingPrice]['c'][i] = +(obj1[minSellingPrice]['c'][i] - negativePrice).toFixed(5)
+                        break
+                    } else {
+                        obj1[minSellingPrice]['c'].shift()
+                        negativePrice = tempNegativePrice
+                    }
+                }
+                delete obj2[minBuyingPrice]
+                break
             }
-
-            delete obj1[key]
-
-
-            // вычесть из поля b у obj2 + может быть c из нескольких, т.е. нужно создать пропорциональное вычитание,
-            // а лучше полностью вычитать сначала из первого элемента (т.е. по сути создаём queue), если там становится меньше или равно нулю
-            // этот первый элемент массива убираем и вычитаем тогда из следующего                  - подбная херня и в else только для obj1
-
-        } else if (obj1[key]['b'] === obj2[key]['b']) {
-            delete obj1[key]
-            delete obj2[key]
         } else {
-            obj1[key]['b'] -= obj2[key]['b']
-            delete obj2[key]
-            // нужно сделать вычитание из поля b объекта 1
+            // нужен, если минимальная котировка на продажу больше, чем котировка на покупку
+            break
         }
-        obj1 = Object.keys(obj1).sort((a, b) => a - b).reduce((acc, i) => {
-            acc[i] = obj1[i]
-            return acc
-        }, {})
-        console.log(obj1)
-        break
     }
 }
 // asd
-/*obj1 = Object.keys(obj1).sort((a, b) => a - b).reduce((acc, i) => {
+// эти сортировки может целиком и не нужны, для стакана достаточно будет по 10 каждой,
+// соответственно это дело приравнивать не в obj1 и obj2, а в какое-нибудь другое состояние. Это даст выйгрыш в том, что
+// не придётся лишний раз прогонять миллион данных через sort и reduce
+obj1 = Object.keys(obj1).sort((a, b) => b - a).reduce((acc, i) => {
     acc[i] = obj1[i]
     return acc
 }, {})
@@ -194,11 +232,16 @@ for (const key in obj1) {
 obj2 = Object.keys(obj2).sort((a, b) => b - a).reduce((acc, i) => {
     acc[i] = obj2[i]
     return acc
-}, {})*/
+}, {})
 
-console.log(counter, 'co')
-/*console.log(obj1)
-console.log(obj2)*/
+
+//console.log(counter, 'co')
+console.log(obj1)
+console.log(obj2)
+
+
+console.log(Object.keys(obj1).length)
+console.log(Object.keys(obj2).length)
 //console.log(obj1)
 
 /*

@@ -1,6 +1,6 @@
 
 let obj1 = {
-    '1' : {
+    /*'1' : {
         a: '1',
         b: 1.4,
         c: [
@@ -21,11 +21,12 @@ let obj1 = {
             0.35,
             0.55
         ]
-    }
+    }*/
+    '25996.13': { a: '25996.13', b: 0.29712, c: [ 0.29712 ] }
 }
 
 let obj2 = {
-    '1' : {
+    /*'1' : {
         a: '1',
         b: 1.4,
         c: [
@@ -50,7 +51,8 @@ let obj2 = {
             1,
             0.9
         ]
-    }
+    }*/
+    '25977.15': { a: '25977.15', b: 0.70923, c: [ 0.70923 ] }
 }
 
 let arrayKey1 = Object.keys(obj1)
@@ -65,7 +67,13 @@ for (const minBuyingPrice in obj2) {
         // самая дешёвая котировка в продаже
         const minSellingPrice = Object.keys(obj1)[0]
 
-        if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ minBuyingPrice >= minSellingPrice) {
+        let adcasc = +minBuyingPrice
+        console.log(adcasc, 'asdgsdfhsdgfjdfghj')
+        let asfasdf =  +minSellingPrice
+        console.log(asfasdf, 'asdgafgsadfg')
+        console.log(adcasc >= asfasdf)
+        if (/*Object.prototype.hasOwnProperty.call(obj1, key)*/ +minBuyingPrice >= +minSellingPrice) {
+
             console.log(obj1[minSellingPrice], 'Продажа')
             console.log(obj2[minBuyingPrice], 'Покупка')
             if (obj2[minBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
