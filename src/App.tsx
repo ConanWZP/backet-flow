@@ -119,7 +119,6 @@ function App() {
                 }
             }
         }
-
         return [obj1, obj2, newTrade]
     }
 
@@ -130,14 +129,11 @@ function App() {
 
                 const generatedObj = generat(obj1, maxAndMinData['minSell'], maxAndMinData['maxSell'])
                 const generatedObj2 = generat(obj2, maxAndMinData['minBuy'], maxAndMinData['maxBuy'])
-
                 const [firstData, secondData, newTrade] = makeTrade(generatedObj, generatedObj2, lastTrade)
                 setObj1(firstData)
                 setObj2(secondData)
                 setLastTrade(newTrade)
-                console.log(generatedObj)
-                console.log(generatedObj2)
-                console.log(newTrade)
+
             }, 1000)
 
             return () => clearInterval(generateData)

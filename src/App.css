@@ -84,6 +84,7 @@
 }
 
 .half{
+  cursor: pointer;
   position: relative;
 /*  border: 1px solid #ccc;*/
 }
@@ -127,4 +128,44 @@
   text-align: left;
   font-size: 24px;
   padding-left: 7px;
+}
+
+
+@keyframes appearing {
+  0% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.sideBarDataLeft {
+  position: absolute;
+  top: 0;
+  left: -120px;
+  width: 100px;
+  height: auto;
+  background-color: #888888;
+  border-radius: 5px;
+  color: white;
+  z-index: -1;
+  opacity: 0;
+  animation: appearing 5s ease-in-out forwards;
+}
+
+.sideBarDataRight {
+  position: absolute;
+  top: 0;
+  right: -120px;
+  width: 100px;
+  height: auto;
+  background-color: #888888;
+  border-radius: 5px;
+  color: white;
+  z-index: -1;
+  animation: appearing 5s ease-in-out forwards;
 }
