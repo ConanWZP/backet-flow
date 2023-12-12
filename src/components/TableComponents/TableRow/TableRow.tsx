@@ -1,14 +1,12 @@
 import {FC, memo, useEffect, useMemo, useState} from "react";
 import {motion} from "framer-motion"
-import {numberWithDots} from "../../utils/numberWithDots.ts";
+import {numberWithDots} from "../../../utils/numberWithDots.ts";
+import {IOfferData} from "../../../types/objectsTypes.ts";
+import InfoBar from "../../MiniComponents/InfoBar/InfoBar.tsx";
 
 
 interface TableRowProps {
-    rowData: {
-        a: string,
-        b: number,
-        c: number[]
-    },
+    rowData: IOfferData,
     isSelling: boolean,
     maxAmount: number,
     oddOrEven: number
@@ -16,23 +14,24 @@ interface TableRowProps {
 
 const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrEven}) => {
 
-    const [sideBarIsShowed, setSideBarIsShowed] = useState(false)
-    const [price, total] = useMemo(
-        () => numberWithDots(rowData.a, rowData.b),
-        [rowData?.a, rowData?.b])
-    console.log(rowData)
-    const changeSideBarStatus = () => {
+    const [sideBarIsShowed, setSideBarIsShowed] = useState<boolean>(false)
+    const [price, total]: [string, string] = useMemo(
+        () => numberWithDots(rowData.Price, rowData.Amount),
+        [rowData?.Price, rowData?.Amount])
+
+    const changeSideBarStatus = (): void => {
+       // e.stopPropagation()
         setSideBarIsShowed((prevState) => !prevState)
        // setSideBarIsShowed(true)
     }
 
     useEffect(() => {
-        if (sideBarIsShowed) {
+      //  if (sideBarIsShowed) {
            const callTimeOut = setTimeout(() => {
                 setSideBarIsShowed(false)
             }, 5000)
             return () => clearTimeout(callTimeOut)
-        }
+      //  }
     }, [sideBarIsShowed]);
 
     // когда улетают вверх или вниз возможно нужно
@@ -56,24 +55,17 @@ const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrE
                 {price}
             </div>
             <div className={'td'}>
-                {rowData?.b}
+                {rowData?.Amount}
             </div>
             <div className={'td'}>
                 {total}
             </div>
-            <div className={`bgc ${isSelling ? 'bgcR' : 'bgcG'}`} style={{width: `${rowData?.b*100/maxAmount}%`}}>
+            <div className={`bgc ${isSelling ? 'bgcR' : 'bgcG'}`} style={{width: `${rowData?.Amount*100/maxAmount}%`}}>
 
             </div>
             {
                 (sideBarIsShowed)  ?
-                    <div className={`${oddOrEven % 2 === 0 ? 'sideBarDataLeft' : 'sideBarDataRight' }`}>
-                        {rowData.c.map((n, index) => (
-                            <div key={+rowData.a*n}>
-                                <div>{index}: {n}</div>
-                                <div>total:{n*+rowData.a}</div>
-                            </div>
-                        ))}
-                    </div>
+                    <InfoBar rowData={rowData} oddOrEven={oddOrEven} isSelling={isSelling} />
                     :
                     null
             }

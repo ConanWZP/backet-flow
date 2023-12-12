@@ -1,8 +1,11 @@
 
-export type TypeOffers = Record<string, number>
 
-export interface IOfferData {
-    a: string,
-    b: number,
-    c: number[]
+export interface RandomObjectData {
+    Price: string,
+    Amount: number
 }
+export interface IOfferData extends RandomObjectData {
+    Offers: number[]
+}
+
+export type TypeOffers = Record<string, IOfferData>

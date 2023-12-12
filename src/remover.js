@@ -209,13 +209,13 @@ obj1 = Object.keys(obj1).sort((a, b) => a - b).reduce((acc, i) => {
     return acc
 }, {})
 
-obj2 = Object.keys(obj2).sort((a, b) => a - b).reduce((acc, i) => {
+obj2 = Object.keys(obj2).sort((a, b) => b - a).reduce((acc, i) => {
     acc[i] = obj2[i]
     return acc
 }, {})
 
 for (const maxBuyingPrice in obj2) {
-
+   // debugger
     // из-за удаления внутренних delete при каждом проходе будет удаляться нулевой элемент,
     // следовательно i не должен менять и всегда = 0
     for (let i = 0; i < Object.keys(obj1).length; i) {
@@ -223,8 +223,8 @@ for (const maxBuyingPrice in obj2) {
         const minSellingPrice = Object.keys(obj1)[0]
 
         if (+maxBuyingPrice >= +minSellingPrice) {
-            console.log(obj1[minSellingPrice], 'Продажа')
-            console.log(obj2[maxBuyingPrice], 'Покупка')
+          //  console.log(obj1[minSellingPrice], 'Продажа')
+          //  console.log(obj2[maxBuyingPrice], 'Покупка')
             if (obj2[maxBuyingPrice]['b'] > obj1[minSellingPrice]['b']) {
                 obj2[maxBuyingPrice]['b'] = +(obj2[maxBuyingPrice]['b'] - obj1[minSellingPrice]['b']).toFixed(5)
                 let negativePrice = obj1[minSellingPrice]['b']
@@ -275,8 +275,12 @@ for (const maxBuyingPrice in obj2) {
         } else {
             // нужен, если минимальная котировка на продажу больше, чем котировка на покупку
             break
+
         }
+       // break
+       // break
    }
+
 }
 obj1 = Object.keys(obj1).sort((a, b) => b - a).reduce((acc, i) => {
     acc[i] = obj1[i]
