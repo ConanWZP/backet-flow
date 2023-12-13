@@ -11,13 +11,10 @@ const mutateAmountAndOffersOfGreaterAmount = (objWithGreaterAmount: TypeOffers, 
         (objWithGreaterAmount[keyOfGreater]['Amount'] * multiplierForGreater - negativePrice)
         /multiplierForGreater).toFixed(5) );   // newAmount1 = (amount1 * price1 - amount2 * price2)/price1
 
-    console.log(objWithGreaterAmount[keyOfGreater])
-    console.log(objWithLessAmount[keyOfLess])
 
     for (const firstOffer of objWithGreaterAmount[keyOfGreater]['Offers']) {
         const tempNegativePrice = Number((negativePrice - firstOffer*multiplierForGreater).toFixed(5))
 
-        console.log(tempNegativePrice)
         if (tempNegativePrice < 0) {
             objWithGreaterAmount[keyOfGreater]['Offers'][0] = Number(((firstOffer*multiplierForGreater - negativePrice)/multiplierForGreater).toFixed(5))
             console.log(objWithGreaterAmount[keyOfGreater]['Offers'][0])
