@@ -7,6 +7,7 @@ import {makeTrade} from "./utils/makeTrade.ts";
 import TableHead from "./components/TableComponents/TableHead/TableHead.tsx";
 import BlockButtons from "./components/BlockButtons/BlockButtons.tsx";
 import {ILastTrade} from "./types/tradeInfo.ts";
+import MainChart from "./components/MainChart/MainChart.tsx";
 
 const maxAndMinData: Record<string, number> = {
     'minSell': 25995,
@@ -17,17 +18,22 @@ const maxAndMinData: Record<string, number> = {
 
 function App() {
     const [sellingData, setSellingData] = useState<TypeOffers>({
-        '123': {
+        /*'123': {
             Price: '123',
             Amount: 1,
             Offers: [0.2, 0.3, 0.4]
-        }
+        }*/
     })
     const [buyingData, setBuyingData] = useState<TypeOffers>({})
     const [lastTrade, setLastTrade] = useState<ILastTrade>({
-        value: '0',
+        value: '26000',
         flag: '0'
     })
+    const [historyTradeData, setHistoryTradeData] = useState<any[]>([{
+        value: 26000,
+        time: Math.floor((new Date().getTime() - new Date().getTimezoneOffset()*60*1000)/1000)
+    }])
+    const [chartIsDarkMode, setChartIsDarkMode] = useState(false)
 
     const [isPause, setIsPause] = useState<boolean>(false)
     const [isCountByTotal, setIsCountByTotal] = useState<boolean>(false)
@@ -38,6 +44,10 @@ function App() {
 
     const changeIsCountByStatus = () => {
         setIsCountByTotal(prevState => !prevState)
+    }
+
+    const changeChartColorMode = () => {
+        setChartIsDarkMode(prevState => !prevState)
     }
 
     useEffect(() => {
@@ -56,6 +66,15 @@ function App() {
                         return {value: newTrade, flag: '1'}
                     } else return {value: newTrade, flag: '0'}
                 })
+                setHistoryTradeData(prevState => {
+                    const prevValue = prevState[prevState.length - 1]
+                    if (prevValue?.value !== +newTrade) {
+                        const currentTime = Math.floor((new Date().getTime() - new Date().getTimezoneOffset()*60*1000)/1000)
+                        return [...prevState, {value: +newTrade, time: currentTime}]
+                    } else {
+                        return prevState
+                    }
+                })
 
             }, 1000)
 
@@ -66,10 +85,14 @@ function App() {
 
 
     return (
-        <div>
-            <BlockButtons changeIsCountByStatus={changeIsCountByStatus} changePauseStatus={changePauseStatus}
-                          isCountByTotal={isCountByTotal} isPause={isPause} />
+        <div className={'main'}>
+            <div className={'chartBlock'}>
+                <button onClick={changeChartColorMode}>{chartIsDarkMode ? 'Тёмный график' : 'Светлый график'}</button>
+                <MainChart chartData={historyTradeData} darkMode={chartIsDarkMode}/>
+            </div>
             <div className={'table'}>
+                <BlockButtons changeIsCountByStatus={changeIsCountByStatus} changePauseStatus={changePauseStatus}
+                              isCountByTotal={isCountByTotal} isPause={isPause}/>
                 <TableHead/>
                 <TableBody sellingData={sellingData} buyingData={buyingData} lastTrade={lastTrade}/>
             </div>

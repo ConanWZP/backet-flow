@@ -4,7 +4,8 @@
   box-sizing: border-box;
 }
 #root {
-  max-width: 1280px;
+  max-width: 1600px;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
@@ -45,6 +46,13 @@
 .read-the-docs {
   color: #888;
 }
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 
 .table {
   display: flex;
@@ -195,4 +203,19 @@
   flex-direction: column;
   align-items: center;
   gap: 10px;
+}
+
+.chartBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.mainChart {
+/*  border: 2px solid red;*/
+  border: 1px solid #2f2f2f;
+  box-shadow: 1px 1px 6px 1px #7d53f2;
+  border-radius: 15px;
+  overflow: hidden;
 }
