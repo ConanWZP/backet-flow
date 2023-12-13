@@ -1,9 +1,7 @@
-import {FC, useCallback, useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import TableRow from "../TableRow/TableRow.tsx";
 import {IOfferData, TypeOffers} from "../../../types/objectsTypes.ts";
 import {mutateLimitedData} from "../../../utils/mutateLimitedData.ts";
-import {FaLongArrowAltDown, FaLongArrowAltUp} from "react-icons/fa";
-import {addComma} from "../../../utils/numberWithCommas.ts";
 import {ILastTrade} from "../../../types/tradeInfo.ts";
 import LastTrade from "../../MiniComponents/LastTrade/LastTrade.tsx";
 
@@ -21,7 +19,6 @@ const TableBody: FC<TableBodyProps> = ({sellingData, buyingData, lastTrade}) => 
     const [maxBuyingTotal, setMaxBuyingTotal] = useState(1)
     const [priceOfShowedSellingData, setPriceOfShowedSellingData] = useState('')
     const [priceOfShowedBuyingData, setPriceOfShowedBuyingData] = useState('')
-    const [value, setValue] = useState('0')
 
 
     const sortAndFormatObjToArray = (obj: TypeOffers, start: number | 'end', limit: number): [string, IOfferData][] => {
@@ -32,25 +29,6 @@ const TableBody: FC<TableBodyProps> = ({sellingData, buyingData, lastTrade}) => 
                 : Number(b[0]) - Number(a[0])).slice(0, limit)
     }
 
-    /*const changeInfoBlockStatus = useCallback((price: string, blockIsShowed: boolean, isSelling: boolean) => {
-       // console.log(price)
-        if (isSelling) {
-            const newLimitedData =  mutateLimitedData(limitedSellingData, price, blockIsShowed)
-            console.log(newLimitedData)
-            setPriceOfShowedSellingData(price)
-            setLimitedSellingData(newLimitedData)
-        } else {
-            const newLimitedData =  mutateLimitedData(limitedBuyingData, price, blockIsShowed)
-            setLimitedBuyingData(newLimitedData)
-        }
-        return '1'
-    }, [limitedBuyingData, limitedSellingData])*/
-
-    const [testData, setTestData] = useState<{ price: string, blockIsShowed: boolean, isSelling: boolean }>({
-        price: '',
-        blockIsShowed: false,
-        isSelling: false
-    })
     const changeInfoBlockStatus = (price: string, blockIsShowed: boolean, isSelling: boolean) => {
 
         if (isSelling) {
@@ -64,62 +42,6 @@ const TableBody: FC<TableBodyProps> = ({sellingData, buyingData, lastTrade}) => 
         }
     }
 
-    /*useEffect(() => {
-        const {price, blockIsShowed, isSelling} = testData
-        if (isSelling) {
-            const newLimitedData =  mutateLimitedData(limitedSellingData, price, blockIsShowed)
-            console.log(newLimitedData)
-            if (blockIsShowed) {
-                setPriceOfShowedSellingData(price)
-            } else {
-                setPriceOfShowedSellingData('')
-            }
-
-            setLimitedSellingData(newLimitedData)
-        } else {
-            const newLimitedData =  mutateLimitedData(limitedBuyingData, price, blockIsShowed)
-            setLimitedBuyingData(newLimitedData)
-        }
-
-    }, [testData.price, testData.blockIsShowed, testData.isSelling, testData]);*/
-
-    // let changeInfoBlockStatus
-
-
-    /* useEffect(() => {
-         /!*changeInfoBlockStatus = (price: string, blockIsShowed: boolean, isSelling: boolean): void => {
-             // console.log('asdasd')
-             if (isSelling) {
-                 const newLimitedData = mutateLimitedData(limitedSellingData, price, blockIsShowed)
-                 console.log(newLimitedData)
-                 console.log(price)
-                 setPriceOfShowedSellingData(price)
-                 setLimitedSellingData(newLimitedData)
-             } else {
-                 const newLimitedData = mutateLimitedData(limitedBuyingData, price, blockIsShowed)
-                 setLimitedBuyingData(newLimitedData)
-             }
-         }*!/
-       //  changeInfoBlockStatus()
-     }, [changeInfoBlockStatus])*/
-
-    /*const changeInfoBlockStatus = (price: string, blockIsShowed: boolean, isSelling: boolean): void => {
-       // console.log('asdasd')
-        if (isSelling) {
-            const newLimitedData =  mutateLimitedData(limitedSellingData, price, blockIsShowed)
-            console.log(newLimitedData)
-            console.log(price)
-            setPriceOfShowedSellingData(price)
-            setLimitedSellingData(newLimitedData)
-        } else {
-            const newLimitedData =  mutateLimitedData(limitedBuyingData, price, blockIsShowed)
-            setLimitedBuyingData(newLimitedData)
-        }
-    }*/
-
-    /*useEffect(() => {
-        console.log(limitedSellingData)
-    }, [limitedSellingData]);*/
 
     useEffect(() => {
         const sortedAndMappedData: [string, IOfferData, boolean][] = sortAndFormatObjToArray(sellingData, 'end', 10)
@@ -155,15 +77,15 @@ const TableBody: FC<TableBodyProps> = ({sellingData, buyingData, lastTrade}) => 
     return (
         <div className={'tbody'}>
             {
-                limitedSellingData.map((el, index) => (
-                    <TableRow maxTotal={maxSellingTotal} key={el[0]} rowData={el[1]} isSelling={true} oddOrEven={index}
+                limitedSellingData.map((el: [string, IOfferData, boolean]) => (
+                    <TableRow maxTotal={maxSellingTotal} key={el[0]} rowData={el[1]} isSelling={true}
                               changeInfoBlockStatusCallback={changeInfoBlockStatus} infoBlockIsShowed={el[2]}/>
                 ))
             }
             <LastTrade lastTrade={lastTrade} />
             {
-                limitedBuyingData.map((el, index) => (
-                    <TableRow maxTotal={maxBuyingTotal} key={el[0]} rowData={el[1]} isSelling={false} oddOrEven={index}
+                limitedBuyingData.map((el: [string, IOfferData, boolean]) => (
+                    <TableRow maxTotal={maxBuyingTotal} key={el[0]} rowData={el[1]} isSelling={false}
                               changeInfoBlockStatusCallback={changeInfoBlockStatus} infoBlockIsShowed={el[2]}/>
                 ))
             }

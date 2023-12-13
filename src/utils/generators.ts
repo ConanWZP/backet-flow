@@ -13,7 +13,6 @@ export const generateDataObject = (objIn: TypeOffers, min: number, max: number, 
     let obj: TypeOffers = JSON.parse(JSON.stringify(objIn))
     if (obj[randResult['Price']]) {
         obj[randResult['Price']] = {
-            //...obj[randResult['Price']],
             Price: randResult['Price'],
             Amount: +(obj[randResult['Price']]['Amount'] + randResult['Amount']).toFixed(5),
             Offers: [...obj[randResult['Price']]['Offers'], randResult['Amount']]
@@ -25,7 +24,6 @@ export const generateDataObject = (objIn: TypeOffers, min: number, max: number, 
             Offers: [randResult['Amount']]
         } as IOfferData
     }
-   // console.log(obj)
     if (isBuying) {
         obj = Object.keys(obj).sort((a: string, b: string) => Number(b) - Number(a)).reduce((acc: TypeOffers, i: string) => {
             acc[i] = obj[i]

@@ -6,7 +6,7 @@ import {generateDataObject} from "./utils/generators.ts";
 import {makeTrade} from "./utils/makeTrade.ts";
 import TableHead from "./components/TableComponents/TableHead/TableHead.tsx";
 import BlockButtons from "./components/BlockButtons/BlockButtons.tsx";
-import {ILastTrade} from "./types/tradeInfo.ts";
+import {ILastTrade, ITradeHistory} from "./types/tradeInfo.ts";
 import MainChart from "./components/MainChart/MainChart.tsx";
 
 const maxAndMinData: Record<string, number> = {
@@ -17,23 +17,17 @@ const maxAndMinData: Record<string, number> = {
 }
 
 function App() {
-    const [sellingData, setSellingData] = useState<TypeOffers>({
-        /*'123': {
-            Price: '123',
-            Amount: 1,
-            Offers: [0.2, 0.3, 0.4]
-        }*/
-    })
+    const [sellingData, setSellingData] = useState<TypeOffers>({})
     const [buyingData, setBuyingData] = useState<TypeOffers>({})
     const [lastTrade, setLastTrade] = useState<ILastTrade>({
         value: '26000',
         flag: '0'
     })
-    const [historyTradeData, setHistoryTradeData] = useState<any[]>([{
+    const [historyTradeData, setHistoryTradeData] = useState<ITradeHistory[]>([{
         value: 26000,
         time: Math.floor((new Date().getTime() - new Date().getTimezoneOffset()*60*1000)/1000)
     }])
-    const [chartIsDarkMode, setChartIsDarkMode] = useState(false)
+    const [chartIsDarkMode, setChartIsDarkMode] = useState(true)
 
     const [isPause, setIsPause] = useState<boolean>(false)
     const [isCountByTotal, setIsCountByTotal] = useState<boolean>(false)
@@ -57,6 +51,8 @@ function App() {
                 const generatedSelling: TypeOffers = generateDataObject(sellingData, maxAndMinData['minSell'], maxAndMinData['maxSell'], false)
                 const generatedBuying: TypeOffers = generateDataObject(buyingData, maxAndMinData['minBuy'], maxAndMinData['maxBuy'], true)
                 const [firstData, secondData, newTrade] = makeTrade(generatedSelling, generatedBuying, lastTrade.value, isCountByTotal)
+              //  console.log(firstData)
+              //  console.log(secondData)
                 setSellingData(firstData)
                 setBuyingData(secondData)
                 setLastTrade((prevState) => {

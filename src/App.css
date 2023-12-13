@@ -4,7 +4,6 @@
   box-sizing: border-box;
 }
 #root {
-  max-width: 1600px;
   width: 100%;
   margin: 0 auto;
   padding: 2rem;
@@ -72,9 +71,6 @@
 .tr {
   display: flex;
   margin: 10px 0;
- /* gap: 20px;*/
-/*  justify-content: space-between;*/
- /* transition: all 0.1s ease-in-out;*/
 }
 
 .td {
@@ -94,17 +90,8 @@
 .half{
   cursor: pointer;
   position: relative;
-/*  border: 1px solid #ccc;*/
 }
-/*
-.half:after{
-  content: '';
-  position: absolute; top: 0; right: 0;
-  width: 50%;
-  height: 100%;
-  background: #69F0AE;
-  z-index: -1;
-}*/
+
 
 .bgc {
   position: absolute; top: 0; right: 0;
@@ -132,7 +119,7 @@
 }
 
 .lastTrade {
-  margin: 20px 0;
+  margin: 30px 0;
   text-align: left;
   font-size: 20px;
   padding-left: 7px;
@@ -167,8 +154,11 @@
   }
 }
 
+
+
 .sideBarData {
   position: absolute;
+  z-index: 3;
   top: 0;
   padding: 5px;
   width: 220px;
@@ -178,21 +168,22 @@
   border-radius: 5px;
   color: white;
   cursor: default;
-  /*opacity: 0;
-  animation: appearing 5s ease-in-out forwards;*/
 }
 
 .sideBarDataLeft {
   left: -230px;
 }
 
+
 .sideBarDataRight {
   right: -230px;
 }
 
 .sideBarOffer {
+  position: relative;
   margin-bottom: 20px;
 }
+
 
 .sideBarOffer:last-child {
   margin-bottom: 0;
@@ -213,7 +204,6 @@
 }
 
 .mainChart {
-/*  border: 2px solid red;*/
   border: 1px solid #2f2f2f;
   box-shadow: 1px 1px 6px 1px #7d53f2;
   border-radius: 15px;
