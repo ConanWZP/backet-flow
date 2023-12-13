@@ -1,6 +1,6 @@
-import {FC, memo, useEffect, useMemo, useState} from "react";
+import {FC, memo, useCallback, useEffect, useMemo, useState} from "react";
 import {motion} from "framer-motion"
-import {numberWithDots} from "../../../utils/numberWithDots.ts";
+import {numberWithCommas} from "../../../utils/numberWithDots.ts";
 import {IOfferData} from "../../../types/objectsTypes.ts";
 import InfoBar from "../../MiniComponents/InfoBar/InfoBar.tsx";
 
@@ -9,30 +9,68 @@ interface TableRowProps {
     rowData: IOfferData,
     isSelling: boolean,
     maxAmount: number,
-    oddOrEven: number
+    oddOrEven: number,
+    changeInfoBlockStatusCallback: (p: string, b: boolean, is: boolean) => void,
+    infoBlockIsShowed: boolean
 }
 
-const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrEven}) => {
+const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrEven, changeInfoBlockStatusCallback, infoBlockIsShowed}) => {
 
-    const [sideBarIsShowed, setSideBarIsShowed] = useState<boolean>(false)
+    const [sideBarIsShowed, setSideBarIsShowed] = useState<boolean>(infoBlockIsShowed)
     const [price, total]: [string, string] = useMemo(
-        () => numberWithDots(rowData.Price, rowData.Amount),
+        () => numberWithCommas(rowData.Price, rowData.Amount),
         [rowData?.Price, rowData?.Amount])
 
     const changeSideBarStatus = (): void => {
-       // e.stopPropagation()
-        setSideBarIsShowed((prevState) => !prevState)
-       // setSideBarIsShowed(true)
+        //console.log('click')
+       // console.log(rowData)
+            changeInfoBlockStatusCallback(rowData?.Price, !infoBlockIsShowed, isSelling)
+
+
+        /*setSideBarIsShowed((prevState) => {
+            console.log(infoBlockIsShowed)
+            changeInfoBlockStatusCallback(rowData?.Price, infoBlockIsShowed, isSelling)
+            return !prevState
+        })*/
     }
 
-    useEffect(() => {
+    /*const changeSideBarStatus = useCallback((): void => {
+        setSideBarIsShowed((prevState) => {
+            changeInfoBlockStatusCallback(rowData?.Price, !prevState, isSelling)
+            return !prevState
+        })
+    }, [changeInfoBlockStatusCallback, isSelling, rowData?.Price])*/
+
+
+    /*useEffect(() => {
+     //   console.log('сработал')
+        setSideBarIsShowed(infoBlockIsShowed)
+    }, [infoBlockIsShowed]);*/
+
+    /*useEffect(() => {
+
+        console.log('click')
+       // if (infoBlockIsShowed !== sideBarIsShowed) {
+            console.log('вызываюсь')
+            changeInfoBlockStatusCallback(rowData?.Price, sideBarIsShowed, isSelling)
+      //  }
+       // changeInfoBlockStatusCallback(rowData?.Price, sideBarIsShowed, isSelling)
+
+    }, [changeSideBarStatus]);*/
+
+    /*useEffect(() => {
+        console.log('asdasdasdasfasdg12412341253')
+        changeInfoBlockStatusCallback(rowData?.Price, sideBarIsShowed, isSelling)
+    }, [sideBarIsShowed]);*/
+
+   /* useEffect(() => {
       //  if (sideBarIsShowed) {
            const callTimeOut = setTimeout(() => {
                 setSideBarIsShowed(false)
             }, 5000)
             return () => clearTimeout(callTimeOut)
       //  }
-    }, [sideBarIsShowed]);
+    }, [sideBarIsShowed]);*/
 
     // когда улетают вверх или вниз возможно нужно
   /*  useEffect(() => {
@@ -64,7 +102,7 @@ const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrE
 
             </div>
             {
-                (sideBarIsShowed)  ?
+                (infoBlockIsShowed)  ?
                     <InfoBar rowData={rowData} oddOrEven={oddOrEven} isSelling={isSelling} />
                     :
                     null

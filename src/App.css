@@ -154,8 +154,8 @@
   border-radius: 5px;
   color: white;
   cursor: default;
-  opacity: 0;
-  animation: appearing 5s ease-in-out forwards;
+  /*opacity: 0;
+  animation: appearing 5s ease-in-out forwards;*/
 }
 
 .sideBarDataLeft {
@@ -172,4 +172,11 @@
 
 .sideBarOffer:last-child {
   margin-bottom: 0;
+}
+
+.blockButtons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }

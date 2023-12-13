@@ -15,7 +15,8 @@ const InfoBar: FC<InfoBarProps> = ({oddOrEven, rowData, isSelling}) => {
     }
 
     return (
-        <div className={`sideBarData ${oddOrEven % 2 === 0 ? 'sideBarDataLeft' : 'sideBarDataRight'}`}
+        <div className={`sideBarData ${isSelling ? 'sideBarDataLeft' : 'sideBarDataRight'}`}
+       /* <div className={`sideBarData ${oddOrEven % 2 === 0 ? 'sideBarDataLeft' : 'sideBarDataRight'}`}*/
              onClick={removeParentOnClick}>
             {rowData.Offers.map((amount, index) => (
                 <div key={+rowData.Price * amount} className={'sideBarOffer'}>

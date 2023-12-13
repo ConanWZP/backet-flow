@@ -5,6 +5,7 @@ import {TypeOffers} from "./types/objectsTypes.ts";
 import {generateDataObject} from "./utils/generators.ts";
 import {makeTrade} from "./utils/makeTrade.ts";
 import TableHead from "./components/TableComponents/TableHead/TableHead.tsx";
+import BlockButtons from "./components/BlockButtons/BlockButtons.tsx";
 
 const maxAndMinData: Record<string, number> = {
     'minSell': 25995,
@@ -23,12 +24,17 @@ function App() {
     })
     const [buyingData, setBuyingData] = useState<TypeOffers>({})
     const [lastTrade, setLastTrade] = useState<number>(0)
+
     const [isPause, setIsPause] = useState<boolean>(false)
+    const [isCountByTotal, setIsCountByTotal] = useState<boolean>(false)
 
     const changePauseStatus = () => {
         setIsPause((prevState) => !prevState)
     }
 
+    const changeIsCountByStatus = () => {
+        setIsCountByTotal(prevState => !prevState)
+    }
 
     useEffect(() => {
         if (!isPause) {
@@ -36,7 +42,7 @@ function App() {
 
                 const generatedSelling: TypeOffers = generateDataObject(sellingData, maxAndMinData['minSell'], maxAndMinData['maxSell'], false)
                 const generatedBuying: TypeOffers = generateDataObject(buyingData, maxAndMinData['minBuy'], maxAndMinData['maxBuy'], true)
-                const [firstData, secondData, newTrade] = makeTrade(generatedSelling, generatedBuying, lastTrade)
+                const [firstData, secondData, newTrade] = makeTrade(generatedSelling, generatedBuying, lastTrade, isCountByTotal)
                 setSellingData(firstData)
                 setBuyingData(secondData)
                 setLastTrade(newTrade)
@@ -51,7 +57,8 @@ function App() {
 
     return (
         <div>
-            <button onClick={changePauseStatus}>{isPause ? 'Продолжить' : 'Пауза'}</button>
+            <BlockButtons changeIsCountByStatus={changeIsCountByStatus} changePauseStatus={changePauseStatus}
+                          isCountByTotal={isCountByTotal} isPause={isPause} />
             <div className={'table'}>
                 <TableHead/>
                 <TableBody sellingData={sellingData} buyingData={buyingData} lastTrade={lastTrade}/>
