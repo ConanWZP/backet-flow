@@ -66,6 +66,7 @@ const MainChart:FC<MainCharProps> = ({chartData, darkMode}) => {
             lineColor: '#a229ff',
             topColor: '#a229ff',
             bottomColor: 'rgba(98,41,255,0.28)'
+            // test
         }
 
         const newSeries = chart.addAreaSeries(darkMode ? seriesOptionsDark : seriesOptions)
