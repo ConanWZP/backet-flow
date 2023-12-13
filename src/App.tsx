@@ -6,6 +6,7 @@ import {generateDataObject} from "./utils/generators.ts";
 import {makeTrade} from "./utils/makeTrade.ts";
 import TableHead from "./components/TableComponents/TableHead/TableHead.tsx";
 import BlockButtons from "./components/BlockButtons/BlockButtons.tsx";
+import {ILastTrade} from "./types/tradeInfo.ts";
 
 const maxAndMinData: Record<string, number> = {
     'minSell': 25995,
@@ -23,7 +24,10 @@ function App() {
         }
     })
     const [buyingData, setBuyingData] = useState<TypeOffers>({})
-    const [lastTrade, setLastTrade] = useState<number>(0)
+    const [lastTrade, setLastTrade] = useState<ILastTrade>({
+        value: '0',
+        flag: '0'
+    })
 
     const [isPause, setIsPause] = useState<boolean>(false)
     const [isCountByTotal, setIsCountByTotal] = useState<boolean>(false)
@@ -42,10 +46,16 @@ function App() {
 
                 const generatedSelling: TypeOffers = generateDataObject(sellingData, maxAndMinData['minSell'], maxAndMinData['maxSell'], false)
                 const generatedBuying: TypeOffers = generateDataObject(buyingData, maxAndMinData['minBuy'], maxAndMinData['maxBuy'], true)
-                const [firstData, secondData, newTrade] = makeTrade(generatedSelling, generatedBuying, lastTrade, isCountByTotal)
+                const [firstData, secondData, newTrade] = makeTrade(generatedSelling, generatedBuying, lastTrade.value, isCountByTotal)
                 setSellingData(firstData)
                 setBuyingData(secondData)
-                setLastTrade(newTrade)
+                setLastTrade((prevState) => {
+                    if (prevState.value > newTrade) {
+                        return {value: newTrade, flag: '-1'}
+                    } else if (prevState.value < newTrade) {
+                        return {value: newTrade, flag: '1'}
+                    } else return {value: newTrade, flag: '0'}
+                })
 
             }, 1000)
 

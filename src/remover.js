@@ -214,6 +214,7 @@ obj2 = Object.keys(obj2).sort((a, b) => b - a).reduce((acc, i) => {
     return acc
 }, {})
 
+let counter = 0
 for (const maxBuyingPrice in obj2) {
    // debugger
     // из-за удаления внутренних delete при каждом проходе будет удаляться нулевой элемент,
@@ -223,6 +224,7 @@ for (const maxBuyingPrice in obj2) {
         const minSellingPrice = Object.keys(obj1)[0]
         const multiplierForBuying = true ? +obj2[maxBuyingPrice]['a'] : 1
         const multiplierForSelling = true ? +obj1[minSellingPrice]['a'] : 1
+
         if (+maxBuyingPrice >= +minSellingPrice) {
           //  console.log(obj1[minSellingPrice], 'Продажа')
           //  console.log(obj2[maxBuyingPrice], 'Покупка')
@@ -246,13 +248,14 @@ for (const maxBuyingPrice in obj2) {
                         negativePrice = tempNegativePrice
                     }
                 }
-
+                counter++
                 delete obj1[minSellingPrice]
 
 
             } else if (obj1[minSellingPrice]['b']*multiplierForSelling === obj2[maxBuyingPrice]['b']*multiplierForBuying) {
                 delete obj1[minSellingPrice]
                 delete obj2[maxBuyingPrice]
+                counter++
                 // т.к. сносим obj2[maxBuyingPrice] то нужен break, break завершит цикл с Object.keys(obj1).length
                 // после чего произойдёт смена maxBuyingPrice'a
                 break
@@ -273,6 +276,7 @@ for (const maxBuyingPrice in obj2) {
                         negativePrice = tempNegativePrice
                     }
                 }
+
                 delete obj2[maxBuyingPrice]
                 // т.к. сносим obj2[maxBuyingPrice] то нужен break, break завершит цикл с Object.keys(obj1).length
                 // после чего произойдёт смена maxBuyingPrice'a
@@ -306,3 +310,5 @@ console.log(obj2)
 
 console.log(Object.keys(obj1).length)
 console.log(Object.keys(obj2).length)
+
+console.log(counter)

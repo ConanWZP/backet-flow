@@ -126,10 +126,26 @@
 .lastTrade {
   margin: 20px 0;
   text-align: left;
-  font-size: 24px;
+  font-size: 20px;
   padding-left: 7px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
+.lastTradeArrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lastTradeArrowUp {
+  color: rgb(150, 213, 142);
+}
+
+.lastTradeArrowDown {
+  color: rgb(255, 150, 142);
+}
 
 @keyframes appearing {
   0% {

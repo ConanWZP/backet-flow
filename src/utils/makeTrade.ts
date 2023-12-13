@@ -6,8 +6,7 @@ const mutateAmountAndOffersOfGreaterAmount = (objWithGreaterAmount: TypeOffers, 
                                               multiplierForGreater: number, multiplierForLess: number): TypeOffers => {
 
     let negativePrice = objWithLessAmount[keyOfLess]['Amount']*multiplierForLess;
-    console.log(objWithLessAmount[keyOfLess])
-    console.log(objWithGreaterAmount[keyOfGreater])
+
     objWithGreaterAmount[keyOfGreater]['Amount'] = Number((
         (objWithGreaterAmount[keyOfGreater]['Amount'] * multiplierForGreater - negativePrice)
         /multiplierForGreater).toFixed(5) );   // newAmount1 = (amount1 * price1 - amount2 * price2)/price1
@@ -25,7 +24,7 @@ const mutateAmountAndOffersOfGreaterAmount = (objWithGreaterAmount: TypeOffers, 
     return objWithGreaterAmount
 }
 
-export const makeTrade = (obj1: TypeOffers, obj2: TypeOffers, lastTrade: number, tradeByTotal: boolean): [TypeOffers, TypeOffers, number] => {
+export const makeTrade = (obj1: TypeOffers, obj2: TypeOffers, lastTrade: string, tradeByTotal: boolean): [TypeOffers, TypeOffers, string] => {
 
     let newTrade = lastTrade
     for (const maxBuyingPrice in obj2) {
@@ -37,9 +36,13 @@ export const makeTrade = (obj1: TypeOffers, obj2: TypeOffers, lastTrade: number,
 
                 if (obj2[maxBuyingPrice]['Amount'] * multiplierForBuying > obj1[minSellingPrice]['Amount'] * multiplierForSelling) {
                     obj2 = mutateAmountAndOffersOfGreaterAmount(obj2, obj1, maxBuyingPrice, minSellingPrice, multiplierForBuying, multiplierForSelling)
+                    // удаление minSellingPrice'a означает совершенную продажу, т.е. сделку
+                    newTrade = minSellingPrice
                     delete obj1[minSellingPrice]
 
                 } else if (obj1[minSellingPrice]['Amount'] * multiplierForSelling === obj2[maxBuyingPrice]['Amount'] * multiplierForBuying) {
+                    // удаление minSellingPrice'a означает совершенную продажу, т.е. сделку
+                    newTrade = minSellingPrice
                     delete obj1[minSellingPrice]
                     delete obj2[maxBuyingPrice]
                     // т.к. сносим obj2[maxBuyingPrice] то нужен break, break завершит цикл с obj1, завершение которого
@@ -48,8 +51,7 @@ export const makeTrade = (obj1: TypeOffers, obj2: TypeOffers, lastTrade: number,
 
                 } else {
                     obj1 = mutateAmountAndOffersOfGreaterAmount(obj1, obj2, minSellingPrice, maxBuyingPrice, multiplierForSelling, multiplierForBuying)
-                    // удаление maxBuyingPrice'a означает совершенную сделку
-                    newTrade = +minSellingPrice
+
                     delete obj2[maxBuyingPrice]
                     // т.к. сносим obj2[maxBuyingPrice] то нужен break, break завершит цикл с obj1, завершение которого
                     // обновит maxBuyingPrice'a
@@ -61,6 +63,5 @@ export const makeTrade = (obj1: TypeOffers, obj2: TypeOffers, lastTrade: number,
             }
         }
     }
-    console.log(obj2)
     return [obj1, obj2, newTrade]
 }

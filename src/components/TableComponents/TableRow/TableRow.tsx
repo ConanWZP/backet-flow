@@ -1,6 +1,6 @@
 import {FC, memo, useCallback, useEffect, useMemo, useState} from "react";
 import {motion} from "framer-motion"
-import {numberWithCommas} from "../../../utils/numberWithDots.ts";
+import {numberWithCommas} from "../../../utils/numberWithCommas.ts";
 import {IOfferData} from "../../../types/objectsTypes.ts";
 import InfoBar from "../../MiniComponents/InfoBar/InfoBar.tsx";
 
@@ -8,13 +8,13 @@ import InfoBar from "../../MiniComponents/InfoBar/InfoBar.tsx";
 interface TableRowProps {
     rowData: IOfferData,
     isSelling: boolean,
-    maxAmount: number,
+    maxTotal: number,
     oddOrEven: number,
     changeInfoBlockStatusCallback: (p: string, b: boolean, is: boolean) => void,
     infoBlockIsShowed: boolean
 }
 
-const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrEven, changeInfoBlockStatusCallback, infoBlockIsShowed}) => {
+const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxTotal, oddOrEven, changeInfoBlockStatusCallback, infoBlockIsShowed}) => {
 
     const [sideBarIsShowed, setSideBarIsShowed] = useState<boolean>(infoBlockIsShowed)
     const [price, total]: [string, string] = useMemo(
@@ -98,7 +98,7 @@ const TableRow: FC<TableRowProps> = memo(({rowData, isSelling, maxAmount, oddOrE
             <div className={'td'}>
                 {total}
             </div>
-            <div className={`bgc ${isSelling ? 'bgcR' : 'bgcG'}`} style={{width: `${rowData?.Amount*100/maxAmount}%`}}>
+            <div className={`bgc ${isSelling ? 'bgcR' : 'bgcG'}`} style={{width: `${+rowData.Price*rowData?.Amount*100/maxTotal}%`}}>
 
             </div>
             {
